@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui"
+xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<p:growl id="growl" showDetail="true" />
+	<title>Worker</title>
+</h:head>
+<h:body>
+
+	<h:form style="float: left; width: 12%">
+
+		<p:menubar style="text-align: right;">
+			<p:menuitem value="Main page" url="../../index.jsf"></p:menuitem>
+		</p:menubar>
+	</h:form>
+
+
+	<div style="width: 70%; text-align: center; margin: auto;">
+		<h:form id="frm_workers_DB">
+
+			<p:panel header="Workers">
+				<p:dataTable id="tableRadnik" value="#{CWorker.DBBClass.workers}"
+					var="wr" scrollable="true" scrollHeight="200">
+
+					<p:column headerText="ID" filterBy="#{wr.personsID}"
+						filterMatchMode="exact" style="width:130px">
+						<div style="text-align: center;">
+							<p:outputLabel value="#{wr.personsID}" />
+						</div>
+					</p:column>
+
+					<p:column headerText="Name">
+						<div style="text-align: center;">
+							<p:outputLabel value="#{wr.name}" />
+						</div>
+					</p:column>
+
+					<p:column headerText="Lastname">
+						<div style="text-align: center;">
+							<p:outputLabel value="#{wr.lastName}" />
+						</div>
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+		</h:form>
+	</div>
+
+	<br />
+
+	<div style="width: 39%; text-align: center; margin: auto;">
+		<h:form>
+
+			<p:panel header="Parameters and actions">
+				<p:panel header="Parameters" style="float: left;">
+					<h:panelGrid columns="2" cellpadding="10">
+
+						<p:outputLabel for="ID" value="Person's ID:" />
+						<h:inputText id="ID" value="#{CWorker.personsID}"
+							onkeypress="return isNumberKey(event)" />
+
+						<p:outputLabel for="name" value="Name:" />
+						<h:inputText id="name" value="#{CWorker.name}" />
+
+						<p:outputLabel for="lastname" value="Lastname:" />
+						<h:inputText id="lastname" value="#{CWorker.lastName}" />
+
+					</h:panelGrid>
+				</p:panel>
+
+				<p:panel header="Actions"
+					style="float: left; height: 200px; width: 30%;">
+					<h:panelGrid columns="1" cellpadding="10"
+						style="margin-top: -10px;">
+
+						<p:commandButton value="Add" update="frm_beforeInsert, growl"
+							actionListener="#{CWorker.insertArray()}" />
+						<p:commandButton value="Update" update="frm_beforeInsert, growl"
+							actionListener="#{CWorker.updateArray()}" />
+						<p:commandButton value="Delete" update="frm_beforeInsert, growl"
+							actionListener="#{CWorker.deleteArray()}" />
+					</h:panelGrid>
+				</p:panel>
+
+				<h:panelGrid style="width: 100%; margin: auto;">
+					<p:commandButton value="Commit" actionListener="#{CWorker.IUD()}"
+						update="frm_workers_DB, frm_beforeInsert, growl" />
+
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</div>
+
+	<h:form id="frm_beforeInsert">
+		<p:dataTable value="#{CWorker.workers}" var="w" scrollable="true"
+			scrollHeight="150" rendered="#{CWorker.workers.size()>0}"
+			style="width: 39%; margin: auto; text-align: center;">
+
+			<p:column headerText="ID">
+				<p:outputLabel value="#{w.personsID}" />
+			</p:column>
+
+			<p:column headerText="Name">
+				<p:outputLabel value="#{w.name}" />
+			</p:column>
+
+			<p:column headerText="Lastname">
+				<p:outputLabel value="#{w.lastName}" />
+			</p:column>
+			
+			<p:column headerText="Action">
+				<p:outputLabel value="#{w.someAction}" />
+			</p:column>
+
+			<p:column headerText="Remove">
+				<p:commandButton value="Delete" update="frm_beforeInsert"
+					actionListener="#{CWorker.removeWorker(w)}" style="height: 30px" />
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+
+
+	<script src="../../js.dir/JavaScript.js"></script>
+
+</h:body>
+</html>
+
